@@ -1,0 +1,19 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: cimg/node:24.13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:once
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm run test:bundle
+      - run: npm pack --dry-run
+workflows:
+  build_and_test:
+    jobs:
+      - test
